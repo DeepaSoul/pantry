@@ -4,7 +4,6 @@ import {BlurView} from '@react-native-community/blur';
 import HomeScreen from '../../screens/HomeScreen';
 import FavoritesScreen from '../../screens/FavoritesScreen';
 import CartScreen from '../../screens/CartScreen';
-import OrderHistoryScreen from '../../screens/OrderHistoryScreen';
 import {TabStyles} from './style';
 import {Text, View} from 'react-native';
 import Home from '../../assets/icons/home.svg';
@@ -14,6 +13,7 @@ import Search from '../../assets/icons/search.svg';
 import User from '../../assets/icons/user.svg';
 import {COLORS, SPACING} from '../../utils/theme/theme';
 import ProfileScreen from '../../screens/Profile';
+import SearchScreen from '../../screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -73,8 +73,8 @@ const TabNavigator = () => {
         ),
       })}
       {tabScreenReturn({
-        tabName: 'History',
-        component: OrderHistoryScreen,
+        tabName: 'Search',
+        component: SearchScreen,
         icon: (
           <Search height={SPACING.space_24} color={COLORS.primaryWhiteHex} />
         ),

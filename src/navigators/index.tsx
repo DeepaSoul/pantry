@@ -36,11 +36,11 @@ const NavigationStacks = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Login"
             component={LoginScreen}
             options={{animation: 'slide_from_bottom'}}
-          />
+          /> */}
           <Stack.Screen
             name="Register"
             component={RegisterScreen}

@@ -1,26 +1,29 @@
-import React from 'react';
-import {SetStateAction, createContext, useState} from 'react';
-import {TYPE_LoggedInUserInfo, TYPE_User} from '../utils/types';
+import React from "react";
+import { SetStateAction, createContext, useState } from "react";
+import {
+  TYPE_DatabaseResponse,
+  TYPE_LoggedInUserInfo,
+  TYPE_User,
+} from "../utils/types";
+import { loginUser, registerUser, logoutUser } from "../store/database";
 
 type Context = {
   exploreApp?: boolean;
   setExploreApp?: React.Dispatch<SetStateAction<boolean>>;
   user?: TYPE_User | undefined;
   setUser?: React.Dispatch<React.SetStateAction<TYPE_User | undefined>>;
-  signInUser?: (user: TYPE_LoggedInUserInfo) => void;
-  signOutUser?: () => void;
-  registerUser?: (user: TYPE_User) => void;
+  signInUser?: (
+    user: TYPE_LoggedInUserInfo
+  ) => Promise<TYPE_DatabaseResponse<Boolean>>;
+  signOutUser?: () => Promise<TYPE_DatabaseResponse<Boolean>>;
+  registerUser?: (user: TYPE_User) => Promise<TYPE_DatabaseResponse<Boolean>>;
 };
 
 const AuthContext = createContext<Context>({});
 
-export const AuthProvider = ({children}: {children: JSX.Element}) => {
+export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<TYPE_User>();
   const [exploreApp, setExploreApp] = useState<boolean>(false);
-
-  const signInUser = (user: TYPE_LoggedInUserInfo) => {};
-  const signOutUser = () => {};
-  const registerUser = (user: TYPE_User) => {};
 
   return (
     <AuthContext.Provider
@@ -28,11 +31,9 @@ export const AuthProvider = ({children}: {children: JSX.Element}) => {
         exploreApp,
         setExploreApp,
         user,
-        setUser,
-        signInUser,
-        signOutUser,
-        registerUser,
-      }}>
+        setUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

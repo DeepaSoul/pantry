@@ -4,22 +4,23 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React, {useContext} from 'react';
-import Container from '../../components/Container';
-import HeaderBar from '../../components/HeaderBar';
+} from "react-native";
+import React, { useContext } from "react";
+import Container from "../../components/Container";
+import HeaderBar from "../../components/HeaderBar";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   SPACING,
-} from '../../utils/theme/theme';
-import AuthContext from '../../authContext';
+} from "../../utils/theme/theme";
+import AuthContext from "../../authContext";
+import { logoutUser } from "../../store/database";
 
-const SCREEN_WIDTH = Dimensions.get('screen').width;
+const SCREEN_WIDTH = Dimensions.get("screen").width;
 
 const ProfileScreen = () => {
-  const {exploreApp, setExploreApp, signOutUser} = useContext(AuthContext);
+  const { exploreApp, setExploreApp, setUser } = useContext(AuthContext);
 
   return (
     <Container>
@@ -29,8 +30,14 @@ const ProfileScreen = () => {
         <TouchableOpacity
           style={styles.Button}
           onPress={() => {
-            exploreApp ? setExploreApp?.(false) : signOutUser?.();
-          }}>
+            if (exploreApp) {
+              setExploreApp?.(false);
+            } else {
+              logoutUser();
+              setUser?.(undefined)
+            }
+          }}
+        >
           <Text style={styles.ButtonText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
@@ -43,12 +50,12 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   ScreenContainer: {
     padding: SPACING.space_15,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   Button: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: SCREEN_WIDTH * 0.95,
     height: SPACING.space_28 * 2,
     backgroundColor: COLORS.primaryBlackRGBA,

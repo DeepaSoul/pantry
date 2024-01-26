@@ -1,3 +1,5 @@
+import { ImageProps } from "react-native";
+
 type TYPE_User = {
   fullName: string;
   email: string;
@@ -21,9 +23,23 @@ type LoginStackParamList = {
   Register: undefined;
 };
 
+type TYPE_MeatType = "All" | "Beef" | "Fish" | "Pork" | "Poultry";
+
+type TYPE_MeatData = {
+  id: string;
+  name: string;
+  description: string;
+  imagelink: ImageProps;
+  favourite: boolean;
+  type: TYPE_MeatType;
+  priceQuantity: { price: number; quantity: number };
+};
+
 export type {
   TYPE_User,
   TYPE_DatabaseResponse,
   TYPE_LoggedInUserInfo,
   LoginStackParamList,
+  TYPE_MeatType,
+  TYPE_MeatData,
 };

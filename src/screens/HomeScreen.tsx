@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -8,114 +8,119 @@ import {
   View,
   ToastAndroid,
   Platform,
-} from 'react-native';
-import {useStore} from '../store/store';
+} from "react-native";
+import { useStore } from "../store/store";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
   SPACING,
-} from '../utils/theme/theme';
-import HeaderBar from '../components/HeaderBar';
-import {FlatList} from 'react-native';
-import meatCard from '../components/meatCard';
-import {Dimensions} from 'react-native';
-import Container from '../components/Container';
-import Filter from '../assets/icons/filter.svg';
-import Title from '../components/Title';
+} from "../utils/theme/theme";
+import HeaderBar from "../components/HeaderBar";
+import { Dimensions } from "react-native";
+import Container from "../components/Container";
+import Filter from "../assets/icons/filter.svg";
+import Title from "../components/Title";
+import { TYPE_MeatData, TYPE_MeatType } from "../utils/types";
+import MeatCard from "../components/MeatCard";
 
-const getCategoriesFromData = (data: any) => {
+const getCategoriesFromData = (data: any): TYPE_MeatType[] => {
   let temp: any = {};
   for (let i = 0; i < data.length; i++) {
-    if (temp[data[i].name] == undefined) {
-      temp[data[i].name] = 1;
+    if (temp[data[i].type] == undefined) {
+      temp[data[i].type] = 1;
     } else {
-      temp[data[i].name]++;
+      temp[data[i].type]++;
     }
   }
   let categories = Object.keys(temp);
-  categories.unshift('All');
-  return categories;
+  categories.unshift("All");
+  return categories as TYPE_MeatType[];
 };
 
-const getmeatList = (category: string, data: any) => {
-  if (category == 'All') {
+const getmeatList = (
+  selectedCategories: TYPE_MeatType[],
+  data: TYPE_MeatData[]
+) => {
+  if (selectedCategories.length < 1 || selectedCategories.includes("All")) {
     return data;
   } else {
-    let meatlist = data.filter((item: any) => item.name == category);
+    let meatlist = data.filter((item) =>
+      selectedCategories.includes(item.type)
+    );
     return meatlist;
   }
 };
 
-const HomeScreen = ({navigation}: any) => {
+const HomeScreen = ({ navigation }: any) => {
   const meatList = useStore((state: any) => state.meatList);
   const addToCart = useStore((state: any) => state.addToCart);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
 
   const categories = getCategoriesFromData(meatList);
-  const [categoryIndex, setCategoryIndex] = useState({
-    index: 0,
-    category: categories[0],
-  });
-  const [sortedmeat, setSortedmeat] = useState(
-    getmeatList(categoryIndex.category, meatList),
+  const [selectedCategories, setSelectedCategories] = useState<TYPE_MeatType[]>(
+    ["All"]
   );
 
-  const ListRef: any = useRef<FlatList>();
+  const [sortedMeat, setSortedMeat] = useState(
+    getmeatList(selectedCategories, meatList)
+  );
+
+  useEffect(() => {
+    setSortedMeat([...getmeatList(selectedCategories, meatList)]);
+  }, [selectedCategories]);
 
   const CoffeCardAddToCart = ({
     id,
-    index,
     name,
-    roasted,
-    imagelink_square,
-    special_ingredient,
+    imagelink,
     type,
-    prices,
-  }: any) => {
+    priceQuantity,
+  }: TYPE_MeatData) => {
     addToCart({
       id,
-      index,
       name,
-      roasted,
-      imagelink_square,
-      special_ingredient,
+      imagelink,
       type,
-      prices,
+      priceQuantity,
     });
     calculateCartPrice();
-    Platform.OS == 'android' &&
+    Platform.OS == "android" &&
       ToastAndroid.showWithGravity(
         `${name} is Added to Cart`,
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
+        ToastAndroid.CENTER
       );
   };
 
-  const returnItemCard = (item: any) => {
+  const updateCategories = (selectedCategory: TYPE_MeatType) => {
+    if (selectedCategory == "All") {
+      setSelectedCategories(["All"]);
+    } else if (!selectedCategories.includes(selectedCategory)) {
+      setSelectedCategories((values) =>
+        [...values, selectedCategory].filter((value) => value != "All")
+      );
+    } else {
+      setSelectedCategories((values) =>
+        values.filter((value) => value != selectedCategory)
+      );
+    }
+  };
+
+  const returnItemCard = (item: TYPE_MeatData, index: number) => {
     return (
       <TouchableOpacity
         key={item.id}
         onPress={() => {
-          navigation.push('Details', {
-            index: item.index,
+          navigation.push("Details", {
+            index: index,
             id: item.id,
             type: item.type,
           });
-        }}>
-        <meatCard
-          id={item.id}
-          index={item.index}
-          type={item.type}
-          roasted={item.roasted}
-          imagelink_square={item.imagelink_square}
-          name={item.name}
-          special_ingredient={item.special_ingredient}
-          average_rating={item.average_rating}
-          price={item.prices[2]}
-          buttonPressHandler={CoffeCardAddToCart}
-        />
+        }}
+      >
+        <MeatCard item={item} buttonPressHandler={CoffeCardAddToCart} />
       </TouchableOpacity>
     );
   };
@@ -125,7 +130,8 @@ const HomeScreen = ({navigation}: any) => {
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}>
+        contentContainerStyle={styles.ScrollViewFlex}
+      >
         {/* App Header */}
         <HeaderBar
           title="Meat"
@@ -140,61 +146,70 @@ const HomeScreen = ({navigation}: any) => {
         />
         <Title title="" />
 
-        <Text>Based on your selection</Text>
-        <Text>Our products</Text>
-
         {/* Category Scroller */}
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.CategoryScrollViewStyle}>
-          {categories.map((data, index) => (
-            <View key={index.toString()}>
+        {meatList && (
+          <View style={styles.CategoryScrollViewStyle}>
+            {categories.map((category, index) => (
               <TouchableOpacity
+                key={index.toString()}
                 style={styles.CategoryScrollViewItem}
                 onPress={() => {
-                  ListRef?.current?.scrollToOffset({
-                    animated: true,
-                    offset: 0,
-                  });
-                  setCategoryIndex({index: index, category: categories[index]});
-                  setSortedmeat([
-                    ...getmeatList(categories[index], meatList),
-                  ]);
-                }}>
+                  updateCategories(category);
+                }}
+              >
                 <Text
                   style={[
                     styles.CategoryText,
-                    categoryIndex.index == index
-                      ? {color: COLORS.primaryBlackRGBA}
+                    selectedCategories.includes(category)
+                      ? {
+                          color: COLORS.primaryBlackRGBA,
+                          fontFamily: FONTFAMILY.avenir_heavy,
+                        }
                       : {},
-                  ]}>
-                  {data}
+                  ]}
+                >
+                  {category}
                 </Text>
-                {categoryIndex.index == index ? (
-                  <View style={styles.ActiveCategory} />
-                ) : (
-                  <></>
-                )}
               </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
+            ))}
+          </View>
+        )}
+
+        <Text
+          style={{
+            fontFamily: FONTFAMILY.avenir,
+            color: COLORS.primaryBlackRGBA,
+          }}
+        >
+          Based on your selection
+        </Text>
+        <Text
+          style={{
+            fontFamily: FONTFAMILY.adobe_garamond_bold,
+            color: COLORS.primaryBlackRGBA,
+            fontSize: FONTSIZE.size_30,
+            marginTop: SPACING.space_10,
+            marginBottom: SPACING.space_20
+          }}
+        >
+          Our products
+        </Text>
 
         {/* meat Flatlist */}
 
-        {sortedmeat?.length > 0 ? (
+        {meatList && sortedMeat?.length > 0 ? (
           <View
             style={{
               gap: 10,
-              marginHorizontal: 'auto',
-              width: 'auto',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+              marginHorizontal: "auto",
+              width: "auto",
+              flexDirection: "row",
+              flexWrap: "wrap",
               marginBottom: SPACING.space_30 * 3,
-            }}>
-            {sortedmeat.map((item: any) => returnItemCard(item))}
+            }}
+          >
+            {sortedMeat.map(returnItemCard)}
           </View>
         ) : (
           <View style={styles.EmptyListContainer}>
@@ -212,11 +227,11 @@ const styles = StyleSheet.create({
     padding: SPACING.space_15,
   },
   InputContainerComponent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     margin: SPACING.space_30,
     borderRadius: BORDERRADIUS.radius_20,
     backgroundColor: COLORS.primaryDarkGreyHex,
-    alignItems: 'center',
+    alignItems: "center",
   },
   InputIcon: {
     marginHorizontal: SPACING.space_20,
@@ -229,14 +244,15 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   CategoryScrollViewStyle: {
-    marginBottom: SPACING.space_20,
+    flexDirection: "row",
+    marginVertical: SPACING.space_20,
   },
-
   CategoryScrollViewItem: {
-    alignItems: 'center',
-    marginRight: SPACING.space_8,
+    alignItems: "center",
+    marginRight: SPACING.space_36,
   },
   CategoryText: {
+    fontFamily: FONTFAMILY.avenir,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLightGreyHex,
     marginBottom: SPACING.space_4,
@@ -253,9 +269,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.space_15,
   },
   EmptyListContainer: {
-    width: Dimensions.get('window').width - SPACING.space_30 * 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: Dimensions.get("window").width - SPACING.space_30 * 2,
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: SPACING.space_36 * 3.6,
   },
 });

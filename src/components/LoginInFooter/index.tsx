@@ -4,44 +4,45 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React from 'react';
+} from "react-native";
+import React from "react";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   SPACING,
-} from '../../utils/theme/theme';
-import {useNavigation} from '@react-navigation/native';
+} from "../../utils/theme/theme";
+import { useNavigation } from "@react-navigation/native";
 
-const SCREEN_WIDTH = Dimensions.get('screen').width;
+const SCREEN_WIDTH = Dimensions.get("screen").width;
 
 const LoginInFooter = ({
+  navigation,
   type,
   onClickHandler,
 }: {
-  type: 'login' | 'register';
+  navigation: any;
+  type: "login" | "register";
   onClickHandler: () => void;
 }) => {
-  const navigation = useNavigation();
-
   return (
     <View style={styles.FooterContainer}>
       <TouchableOpacity style={styles.FooterButton} onPress={onClickHandler}>
         <Text style={styles.FooterButtonText}>
-          {type === 'login' ? 'Sign In' : 'Sign up'}
+          {type === "login" ? "Sign In" : "Sign up"}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          type === 'login'
-            ? navigation.navigate('Login')
-            : navigation.navigate('Register');
-        }}>
+          type === "login"
+            ? navigation.navigate("Login")
+            : navigation.navigate("Register");
+        }}
+      >
         <Text style={styles.ScreenChangeText}>
-          {`${type === 'login' ? 'Do not have' : 'Have'}`} an account?{' '}
+          {`${type === "login" ? "Do not have" : "Have"}`} an account?{" "}
           <Text style={styles.ScreenChangeInnerText}>
-            {type === 'login' ? 'Register' : 'Login'}
+            {type === "login" ? "Register" : "Login"}
           </Text>
         </Text>
       </TouchableOpacity>
@@ -50,13 +51,13 @@ const LoginInFooter = ({
         <Text style={styles.OptionsText}>or</Text>
         <View style={styles.GreenLine} />
       </View>
-      <TouchableOpacity style={styles.FooterButton}>
+      <TouchableOpacity style={styles.FooterButton} onPress={() => navigation.navigate("Tab")}>
         <Text style={styles.FooterButtonText}>Explore our app</Text>
       </TouchableOpacity>
-      {type === 'register' && (
+      {type === "register" && (
         <View>
           <Text>
-            By sigining up you agree to our, <Text>Terms</Text>,{' '}
+            By sigining up you agree to our, <Text>Terms</Text>,{" "}
             <Text>Data Policy</Text> and
           </Text>
           <TouchableOpacity>
@@ -72,12 +73,12 @@ export default LoginInFooter;
 
 const styles = StyleSheet.create({
   FooterContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   FooterButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: SCREEN_WIDTH * 0.95,
     height: SPACING.space_28 * 2,
     backgroundColor: COLORS.primaryBlackRGBA,
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.avenir_heavy,
   },
   Options: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginLeft: SCREEN_WIDTH * 0.05,
     width: SCREEN_WIDTH * 0.95,
   },

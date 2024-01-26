@@ -44,6 +44,10 @@ const registerUser = async (
       userInformation.email,
       JSON.stringify(userInformation),
     );
+    await AsyncStorage.setItem(
+      CONST_LoggedInUserKey,
+      JSON.stringify(userInformation),
+    );
     return {
       success: true,
       data: true,
@@ -61,7 +65,7 @@ const registerUser = async (
 
 const loginUser = async (
   userInformation: TYPE_LoggedInUserInfo,
-): Promise<TYPE_DatabaseResponse<Boolean>> => {
+): Promise<TYPE_DatabaseResponse<TYPE_User | undefined>> => {
   try {
     const user = await AsyncStorage.getItem(userInformation.email);
 
@@ -75,12 +79,12 @@ const loginUser = async (
       );
       return {
         success: true,
-        data: true,
+        data: JSON.parse(user),
       };
     } else {
       return {
         success: false,
-        data: false,
+        data: undefined,
       };
     }
   } catch (e) {
@@ -89,7 +93,7 @@ const loginUser = async (
     return {
       success: false,
       error: e as string,
-      data: false,
+      data: undefined,
     };
   }
 };

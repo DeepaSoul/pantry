@@ -48,8 +48,8 @@ const PaymentList = [
 
 const PaymentScreen = ({navigation, route}: any) => {
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
-  const addToOrderHistoryListFromCart = useStore(
-    (state: any) => state.addToOrderHistoryListFromCart,
+  const checkOutFromCart = useStore(
+    (state: any) => state.checkOutFromCart,
   );
 
   const [paymentMode, setPaymentMode] = useState('Credit Card');
@@ -57,11 +57,11 @@ const PaymentScreen = ({navigation, route}: any) => {
 
   const buttonPressHandler = () => {
     setShowAnimation(true);
-    addToOrderHistoryListFromCart();
+    checkOutFromCart();
     calculateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate('History');
+      navigation.navigate('Search');
     }, 2000);
   };
 
