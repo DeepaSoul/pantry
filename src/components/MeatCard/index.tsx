@@ -39,7 +39,7 @@ const MeatCard: React.FC<meatCardProps> = ({ item, buttonPressHandler }) => {
       <Text style={styles.CardTitle}>{item?.name}</Text>
       <View style={styles.CardFooterRow}>
         <Text style={styles.CardPriceCurrency}>
-          R <Text style={styles.CardPrice}>{item?.priceQuantity?.price ?? 1}</Text>
+          R <Text style={styles.CardPrice}>{item?.price ?? 1}</Text>
         </Text>
         <TouchableOpacity
           onPress={() => {

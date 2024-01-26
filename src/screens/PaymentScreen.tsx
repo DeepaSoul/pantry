@@ -61,7 +61,7 @@ const PaymentScreen = ({navigation, route}: any) => {
     calculateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate('Search');
+      navigation.navigate('Home');
     }, 2000);
   };
 

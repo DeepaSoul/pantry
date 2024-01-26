@@ -1,10 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   TYPE_DatabaseResponse,
   TYPE_LoggedInUserInfo,
   TYPE_User,
-} from '../../utils/types';
-import {CONST_LoggedInUserKey} from '../../constants';
+} from "../../utils/types";
+import { CONST_LoggedInUserKey } from "../../constants";
 
 const getLoggedInUser = async (): Promise<
   TYPE_DatabaseResponse<TYPE_User | undefined>
@@ -13,17 +13,20 @@ const getLoggedInUser = async (): Promise<
     const user = await AsyncStorage.getItem(CONST_LoggedInUserKey);
 
     if (user) {
-      return JSON.parse(user);
+      return {
+        success: true,
+        data: JSON.parse(user),
+      };
     } else {
       return {
         success: false,
-        error: 'UR1: No user found',
+        error: "UR1: No user found",
         data: undefined,
       };
     }
   } catch (e) {
     // Ideally, best to log out the error to an error handler like bugsnag
-    console.error('UR2: Error getting user', e);
+    console.error("UR2: Error getting user", e);
     return {
       success: false,
       error: e as string,
@@ -33,20 +36,20 @@ const getLoggedInUser = async (): Promise<
 };
 
 const registerUser = async (
-  userInformation: TYPE_User,
+  userInformation: TYPE_User
 ): Promise<TYPE_DatabaseResponse<Boolean>> => {
   try {
     const user = await AsyncStorage.getItem(userInformation.email);
     if (user) {
-      throw new Error('RGU01: User already exists');
+      throw new Error("RGU01: User already exists");
     }
     await AsyncStorage.setItem(
       userInformation.email,
-      JSON.stringify(userInformation),
+      JSON.stringify(userInformation)
     );
     await AsyncStorage.setItem(
       CONST_LoggedInUserKey,
-      JSON.stringify(userInformation),
+      JSON.stringify(userInformation)
     );
     return {
       success: true,
@@ -54,7 +57,7 @@ const registerUser = async (
     };
   } catch (e) {
     // Ideally, best to log out the error to an error handler like bugsnag
-    console.error('RGU02: Error getting user', e);
+    console.error("RGU02: Error getting user", e);
     return {
       success: false,
       error: e as string,
@@ -64,7 +67,7 @@ const registerUser = async (
 };
 
 const loginUser = async (
-  userInformation: TYPE_LoggedInUserInfo,
+  userInformation: TYPE_LoggedInUserInfo
 ): Promise<TYPE_DatabaseResponse<TYPE_User | undefined>> => {
   try {
     const user = await AsyncStorage.getItem(userInformation.email);
@@ -75,7 +78,7 @@ const loginUser = async (
     ) {
       await AsyncStorage.setItem(
         CONST_LoggedInUserKey,
-        JSON.stringify(userInformation),
+        JSON.stringify(userInformation)
       );
       return {
         success: true,
@@ -89,7 +92,7 @@ const loginUser = async (
     }
   } catch (e) {
     // Ideally, best to log out the error to an error handler like bugsnag
-    console.error('STU01: Failed to login user', e);
+    console.error("STU01: Failed to login user", e);
     return {
       success: false,
       error: e as string,
@@ -107,7 +110,7 @@ const logoutUser = async (): Promise<TYPE_DatabaseResponse<boolean>> => {
     };
   } catch (e) {
     // Ideally, best to log out the error to an error handler like bugsnag
-    console.error('LOU01: Failed to logout user', e);
+    console.error("LOU01: Failed to logout user", e);
     return {
       success: false,
       error: e as string,
@@ -116,4 +119,4 @@ const logoutUser = async (): Promise<TYPE_DatabaseResponse<boolean>> => {
   }
 };
 
-export {getLoggedInUser, registerUser, loginUser, logoutUser};
+export { getLoggedInUser, registerUser, loginUser, logoutUser };

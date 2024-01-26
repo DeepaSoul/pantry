@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Container from "../../components/Container";
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../../utils/theme/theme";
 import Title from "../../components/Title";
-import { TYPE_LoggedInUserInfo, TYPE_User } from "../../utils/types";
+import { TYPE_User } from "../../utils/types";
 import LoginInFooter from "../../components/LoginInFooter";
 import Left from "../../assets/icons/left.svg";
 import AuthContext from "../../authContext";
 import EyeOpen from "../../assets/icons/eyeOpened.svg";
 import EyeClosed from "../../assets/icons/eyeClosed.svg";
-import { loginUser, registerUser } from "../../store/database";
+import { registerUser } from "../../store/database";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
 const SCREEN_HEIGHT = Dimensions.get("screen").height;
@@ -88,8 +88,6 @@ const RegisterScreen = ({ navigation }: any) => {
       setFormErrors([...formErrors.filter((err) => err.name != name)]);
     }
   };
-
-  useEffect(() => {}, [userLoginFormData]);
 
   const renderInput = ({
     placeholder,

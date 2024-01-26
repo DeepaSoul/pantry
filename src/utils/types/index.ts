@@ -32,7 +32,8 @@ type TYPE_MeatData = {
   imagelink: ImageProps;
   favourite: boolean;
   type: TYPE_MeatType;
-  priceQuantity: { price: number; quantity: number };
+  price: number;
+  quantity: number;
 };
 
 export type {

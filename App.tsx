@@ -16,17 +16,7 @@ const App = () => {
 
   useEffect(() => {
     SplashScreen.hide();
-    getUser();
   }, []);
-
-  const getUser = async () => {
-    setLoading(true);
-    const loggedInUser = await getLoggedInUser();
-    if (loggedInUser.success && loggedInUser.data) {
-      setUser?.(loggedInUser.data);
-    }
-    setLoading(false);
-  };
 
   if (loading) {
     return (

@@ -20,7 +20,7 @@ export const useStore = create(
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == cartItem.id) {
                 found = true;
-                state.CartList[i].priceQuantity.quantity++;
+                state.CartList[i].quantity++;
                 break;
               }
             }
@@ -35,8 +35,8 @@ export const useStore = create(
             let totalprice = 0;
             for (let i = 0; i < state.CartList.length; i++) {
               let price =
-                parseFloat(state.CartList[i].priceQuantity.price) *
-                  state.CartList[i].priceQuantity.quantity || 1;
+                parseFloat(state.CartList[i].price) *
+                  state.CartList[i].quantity || 1;
               state.CartList[i].ItemPrice = price.toFixed(2).toString();
               totalprice = totalprice + price;
             }
@@ -88,7 +88,7 @@ export const useStore = create(
           produce((state) => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
-                state.CartList[i].priceQuantity.quantity++;
+                state.CartList[i].quantity++;
                 break;
               }
             }
@@ -99,8 +99,8 @@ export const useStore = create(
           produce((state) => {
             for (let i = 0; i < state.CartList.length; i++) {
               if (state.CartList[i].id == id) {
-                if (state.CartList[i].priceQuantity.quantity > 1) {
-                  state.CartList[i].priceQuantity.quantity--;
+                if (state.CartList[i].quantity > 1) {
+                  state.CartList[i].quantity--;
                 } else {
                   state.CartList.splice(i, 1);
                 }

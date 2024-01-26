@@ -31,15 +31,13 @@ const CartItem: React.FC<CartItemProps> = ({
   decrementCartItemQuantityHandler,
   removeCartItem,
 }) => {
-  const itemPriceQuantity = item.priceQuantity;
-
   return (
     <View style={styles.CartItemSContainer}>
       <Image source={item.imagelink} style={styles.CartItemSingleImage} />
       <View style={styles.CartItemSingleInfoContainer}>
         <Text style={styles.CartItemTitle}>{item.name}</Text>
         <Text style={styles.CartItemSubtitle}>
-          R {(itemPriceQuantity.price ?? 1 * itemPriceQuantity.quantity).toFixed(2)}
+          R {(item.price ?? 1 * item.quantity).toFixed(2)}
         </Text>
         <View style={styles.CartItemSingleQuantityContainer}>
           <TouchableOpacity
@@ -67,7 +65,7 @@ const CartItem: React.FC<CartItemProps> = ({
               <Text style={{ color: COLORS.primaryBlackRGBA }}>-</Text>
             </TouchableOpacity>
             <Text style={styles.CartItemQuantityText}>
-              {itemPriceQuantity.quantity}
+              {item.quantity}
             </Text>
             <TouchableOpacity
               style={styles.CartItemIcon}

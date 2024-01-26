@@ -71,24 +71,12 @@ const HomeScreen = ({ navigation }: any) => {
     setSortedMeat([...getmeatList(selectedCategories, meatList)]);
   }, [selectedCategories]);
 
-  const CoffeCardAddToCart = ({
-    id,
-    name,
-    imagelink,
-    type,
-    priceQuantity,
-  }: TYPE_MeatData) => {
-    addToCart({
-      id,
-      name,
-      imagelink,
-      type,
-      priceQuantity,
-    });
+  const CoffeCardAddToCart = (meatdata: TYPE_MeatData) => {
+    addToCart(meatdata);
     calculateCartPrice();
     Platform.OS == "android" &&
       ToastAndroid.showWithGravity(
-        `${name} is Added to Cart`,
+        `${meatdata.name} is Added to Cart`,
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SetStateAction, createContext, useState } from "react";
 import {
   TYPE_DatabaseResponse,
   TYPE_LoggedInUserInfo,
   TYPE_User,
 } from "../utils/types";
-import { loginUser, registerUser, logoutUser } from "../store/database";
+import { getLoggedInUser } from "../store/database";
 
 type Context = {
   exploreApp?: boolean;
@@ -25,13 +25,24 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<TYPE_User>();
   const [exploreApp, setExploreApp] = useState<boolean>(false);
 
+  const verifyLoggedInUser = async () => {
+    const loggedInUser = await getLoggedInUser();
+    if (loggedInUser?.success && loggedInUser.data) {
+      setUser(loggedInUser.data);
+    }
+  };
+
+  useEffect(() => {
+    verifyLoggedInUser();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
         exploreApp,
         setExploreApp,
         user,
-        setUser
+        setUser,
       }}
     >
       {children}
