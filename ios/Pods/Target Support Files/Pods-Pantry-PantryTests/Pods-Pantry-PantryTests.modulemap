@@ -1,0 +1,6 @@
+module Pods_Pantry_PantryTests {
+  umbrella header "Pods-Pantry-PantryTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
