@@ -2,6 +2,12 @@
 
 A heavan for meat lovers.
 
+![Simulator Screenshot - iPhone SE (3rd generation) - 2024-01-28 at 23 15 01](https://github.com/DeepaSoul/pantry/assets/42563346/7be4aaab-4053-4e78-b74b-379b72dca103)
+![Simulator Screenshot - iPhone SE (3rd generation) - 2024-01-28 at 23 13 52](https://github.com/DeepaSoul/pantry/assets/42563346/32a873fe-4491-4fd7-88b6-ac48eea80bc0)
+![Simulator Screenshot - iPhone SE (3rd generation) - 2024-01-28 at 23 14 25](https://github.com/DeepaSoul/pantry/assets/42563346/56475482-35a6-4cdb-ac38-ad8fb629cad6)
+![Simulator Screenshot - iPhone SE (3rd generation) - 2024-01-28 at 23 14 44](https://github.com/DeepaSoul/pantry/assets/42563346/cb4fe8fd-0696-43c1-a5ea-0fbbf6439c88)
+
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
