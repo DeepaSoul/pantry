@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ImageProps,
   Image,
   TouchableOpacity,
   Dimensions,
@@ -64,9 +63,7 @@ const CartItem: React.FC<CartItemProps> = ({
             >
               <Text style={{ color: COLORS.primaryBlackRGBA }}>-</Text>
             </TouchableOpacity>
-            <Text style={styles.CartItemQuantityText}>
-              {item.quantity}
-            </Text>
+            <Text style={styles.CartItemQuantityText}>{item.quantity}</Text>
             <TouchableOpacity
               style={styles.CartItemIcon}
               onPress={() => {

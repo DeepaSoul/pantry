@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -18,11 +18,14 @@ import PaymentFooter from "../../components/PaymentFooter";
 import CartItem from "../../components/CartItem";
 import Container from "../../components/Container";
 import Title from "../../components/Title";
+import AuthContext from "../../authContext";
+import Loader from "../../components/Loader";
 
 const CARD_HEIGHT = Dimensions.get("window").height;
 const CARTSCREEN_WIDTH = Dimensions.get("window").width;
 
 const CartScreen = ({ navigation }: any) => {
+  const { exploreApp, setExploreApp } = useContext(AuthContext);
   navigation.setOptions({ tabBarStyle: { display: "none" } });
 
   const [promoCode, setPromoCode] = useState("");
@@ -52,6 +55,17 @@ const CartScreen = ({ navigation }: any) => {
     decrementCartItemQuantity(id);
     calculateCartPrice();
   };
+
+  useEffect(() => {
+    if (exploreApp) {
+      setExploreApp?.(false);
+    }
+  }, [exploreApp]);
+
+  if (exploreApp) {
+    return <Loader />;
+  }
+
   return (
     <Container>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -92,7 +106,10 @@ const CartScreen = ({ navigation }: any) => {
                     decrementCartItemQuantityHandler={
                       decrementCartItemQuantityHandler
                     }
-                    removeCartItem={removeCartItem}
+                    removeCartItem={(id) => {
+                      removeCartItem(id);
+                      calculateCartPrice();
+                    }}
                   />
                 </TouchableOpacity>
               ))}
@@ -153,10 +170,15 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_25,
     padding: SPACING.space_8,
     margin: SPACING.space_15,
+    backgroundColor: COLORS.primaryFloral,
     shadowColor: "rgba(84, 99, 75, 0.2)",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 15,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.15,
     shadowRadius: 0,
+    elevation: 6,
   },
   PromoCodeInputBorder: {
     borderLeftWidth: 1,

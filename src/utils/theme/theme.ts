@@ -33,7 +33,6 @@ export const SPACING: Spacing = {
 };
 
 interface Color {
-  primaryRedHex: string;
   primaryOrangeHex: string;
   primaryBlackHex: string;
   primaryDarkGreyHex: string;
@@ -46,22 +45,23 @@ interface Color {
   primaryBlackRGBA: string;
   secondaryBlackRGBA: string;
   backgroundGrey: string;
+  primaryFloral: string;
 }
 
 export const COLORS: Color = {
-  primaryRedHex: '#DC3535',
-  primaryOrangeHex: '#FFFFFF',
-  primaryBlackHex: '#FCF9F5', // 2
-  primaryDarkGreyHex: '#FCF9F5', // 1
-  secondaryDarkGreyHex: '#21262E',
-  primaryGreyHex: '#252A32',
-  secondaryGreyHex: '#252A32',
-  primaryLightGreyHex: '#352329', //grey
-  secondaryLightGreyHex: '#AEAEAE',
-  primaryWhiteHex: '#FFFFFF',
-  primaryBlackRGBA: '#54634B',
-  secondaryBlackRGBA: 'rgba(0,0,0,0.7)',
-  backgroundGrey: '#EBEAE4',
+  primaryFloral: "#FCF9F5",
+  primaryOrangeHex: "#FFFFFF",
+  primaryBlackHex: "#FCF9F5", // 2
+  primaryDarkGreyHex: "#FCF9F5", // 1
+  secondaryDarkGreyHex: "#21262E",
+  primaryGreyHex: "#252A32",
+  secondaryGreyHex: "#252A32",
+  primaryLightGreyHex: "#352329", //grey
+  secondaryLightGreyHex: "#AEAEAE",
+  primaryWhiteHex: "#FFFFFF",
+  primaryBlackRGBA: "#54634B",
+  secondaryBlackRGBA: "rgba(0,0,0,0.7)",
+  backgroundGrey: "#EBEAE4",
 };
 
 interface FontFamily {
@@ -73,11 +73,11 @@ interface FontFamily {
 }
 
 export const FONTFAMILY: FontFamily = {
-  avenir: 'Avenir',
-  avenir_heavy: 'Avenir-Heavy',
-  avenir_regular: 'Avenir-Book',
-  adobe_garamond: 'AGaramondPro-BoldItalic',
-  adobe_garamond_bold: 'AGaramondPro-Bold',
+  avenir: "Avenir",
+  avenir_heavy: "Avenir-Heavy",
+  avenir_regular: "Avenir-Book",
+  adobe_garamond: "AGaramondPro-BoldItalic",
+  adobe_garamond_bold: "AGaramondPro-Bold",
 };
 
 interface FontSize {

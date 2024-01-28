@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +18,7 @@ import AuthContext from "../../authContext";
 import EyeOpen from "../../assets/icons/eyeOpened.svg";
 import EyeClosed from "../../assets/icons/eyeClosed.svg";
 import { loginUser } from "../../store/database";
+import Cross from "../../assets/icons/cross.svg";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
 const SCREEN_HEIGHT = Dimensions.get("screen").height;
@@ -39,7 +41,7 @@ const LoginScreen = ({ navigation }: any) => {
   const [submitError, setSubmitError] = useState<string>();
 
   const onSignIn = async () => {
-    if(formErrors.length > 0){
+    if (formErrors.length > 0) {
       return;
     }
     if (
@@ -168,7 +170,7 @@ const LoginScreen = ({ navigation }: any) => {
                 <EyeClosed color={COLORS.primaryBlackRGBA} />
               )
             ) : (
-              <Text>X</Text>
+              <Cross color={COLORS.primaryBlackRGBA} />
             )}
           </TouchableOpacity>
         </View>
@@ -183,85 +185,91 @@ const LoginScreen = ({ navigation }: any) => {
 
   return (
     <Container>
-      <View style={{ padding: SPACING.space_15 }}>
-        <View style={{ marginLeft: -SCREEN_WIDTH * 0.01 }}>
-          <Left color={COLORS.primaryBlackRGBA} />
-        </View>
+      <ScrollView>
+        <View style={{ padding: SPACING.space_15 }}>
+          <View style={{ marginLeft: -SCREEN_WIDTH * 0.01 }}>
+            <Left color={COLORS.primaryBlackRGBA} />
+          </View>
 
-        <TouchableOpacity
-          style={{ alignItems: "flex-end" }}
-          onPress={() => {
-            setExploreApp?.(true);
-          }}
-        >
-          <Text style={{ fontFamily: FONTFAMILY.avenir }}>Explore app</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{ alignItems: "flex-end" }}
+            onPress={() => {
+              setExploreApp?.(true);
+            }}
+          >
+            <Text style={{ fontFamily: FONTFAMILY.avenir }}>Explore app</Text>
+          </TouchableOpacity>
 
-        <Text
-          style={{
-            fontFamily: FONTFAMILY.adobe_garamond,
-            fontSize: SPACING.space_20 * 2,
-            color: COLORS.primaryBlackRGBA,
-          }}
-        >
-          Welcome to
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTFAMILY.adobe_garamond,
-            fontSize: SPACING.space_20 * 2,
-            color: COLORS.primaryBlackRGBA,
-            marginBottom: SPACING.space_10,
-          }}
-        >
-          Pantry by Marble
-        </Text>
-
-        <Text
-          style={{
-            fontFamily: FONTFAMILY.avenir,
-            fontSize: SPACING.space_16,
-            color: COLORS.primaryBlackRGBA,
-          }}
-        >
-          Sign up for easy payment, collection
-        </Text>
-        <Text
-          style={{
-            fontFamily: FONTFAMILY.avenir,
-            fontSize: SPACING.space_16,
-            color: COLORS.primaryBlackRGBA,
-          }}
-        >
-          and much more
-        </Text>
-
-        <Title title="" />
-
-        <View style={{ marginTop: SCREEN_HEIGHT * 0.08 }} />
-
-        {renderInput({
-          placeholder: "john.doe@email.com",
-          name: "email",
-          label: "Email",
-          type: "emailAddress",
-        })}
-
-        {renderInput({
-          placeholder: "********************",
-          name: "password",
-          label: "Password",
-          type: "password",
-        })}
-
-        {submitError && (
-          <Text style={{ fontFamily: FONTFAMILY.avenir, color: "red" }}>
-            {submitError}
+          <Text
+            style={{
+              fontFamily: FONTFAMILY.adobe_garamond,
+              fontSize: SPACING.space_20 * 2,
+              color: COLORS.primaryBlackRGBA,
+            }}
+          >
+            Welcome to
           </Text>
-        )}
+          <Text
+            style={{
+              fontFamily: FONTFAMILY.adobe_garamond,
+              fontSize: SPACING.space_20 * 2,
+              color: COLORS.primaryBlackRGBA,
+              marginBottom: SPACING.space_10,
+            }}
+          >
+            Pantry by Marble
+          </Text>
 
-        <LoginInFooter navigation={navigation} onClickHandler={onSignIn} type="login" />
-      </View>
+          <Text
+            style={{
+              fontFamily: FONTFAMILY.avenir,
+              fontSize: SPACING.space_16,
+              color: COLORS.primaryBlackRGBA,
+            }}
+          >
+            Sign up for easy payment, collection
+          </Text>
+          <Text
+            style={{
+              fontFamily: FONTFAMILY.avenir,
+              fontSize: SPACING.space_16,
+              color: COLORS.primaryBlackRGBA,
+            }}
+          >
+            and much more
+          </Text>
+
+          <Title title="" />
+
+          <View style={{ marginTop: SCREEN_HEIGHT * 0.08 }} />
+
+          {renderInput({
+            placeholder: "john.doe@email.com",
+            name: "email",
+            label: "Email",
+            type: "emailAddress",
+          })}
+
+          {renderInput({
+            placeholder: "********************",
+            name: "password",
+            label: "Password",
+            type: "password",
+          })}
+
+          {submitError && (
+            <Text style={{ fontFamily: FONTFAMILY.avenir, color: "red" }}>
+              {submitError}
+            </Text>
+          )}
+
+          <LoginInFooter
+            navigation={navigation}
+            onClickHandler={onSignIn}
+            type="login"
+          />
+        </View>
+      </ScrollView>
     </Container>
   );
 };

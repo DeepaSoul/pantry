@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,53 +6,53 @@ import {
   StatusBar,
   ScrollView,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
   SPACING,
-} from '../utils/theme/theme';
-import PaymentMethod from '../components/PaymentMethod';
-import PaymentFooter from '../components/PaymentFooter';
-import LinearGradient from 'react-native-linear-gradient';
-import CustomIcon from '../components/CustomIcon';
-import {useStore} from '../store/store';
-import PopUpAnimation from '../components/PopUpAnimation';
-import Container from '../components/Container';
-import HeaderBar from '../components/HeaderBar';
+} from "../../utils/theme/theme";
+import PaymentMethod from "../../components/PaymentMethod";
+import PaymentFooter from "../../components/PaymentFooter";
+import LinearGradient from "react-native-linear-gradient";
+import CustomIcon from "../../components/CustomIcon";
+import { useStore } from "../../store/store";
+import PopUpAnimation from "../../components/PopUpAnimation";
+import Container from "../../components/Container";
+import HeaderBar from "../../components/HeaderBar";
+import AuthContext from "../../authContext";
 
 const PaymentList = [
   {
-    name: 'Wallet',
-    icon: 'icon',
+    name: "Wallet",
+    icon: "icon",
     isIcon: true,
   },
   {
-    name: 'Google Pay',
-    icon: require('../assets/app_images/gpay.png'),
+    name: "Google Pay",
+    icon: require("../../assets/app_images/gpay.png"),
     isIcon: false,
   },
   {
-    name: 'Apple Pay',
-    icon: require('../assets/app_images/applepay.png'),
+    name: "Apple Pay",
+    icon: require("../../assets/app_images/applepay.png"),
     isIcon: false,
   },
   {
-    name: 'Amazon Pay',
-    icon: require('../assets/app_images/amazonpay.png'),
+    name: "Amazon Pay",
+    icon: require("../../assets/app_images/amazonpay.png"),
     isIcon: false,
   },
 ];
 
-const PaymentScreen = ({navigation, route}: any) => {
+const PaymentScreen = ({ navigation, route }: any) => {
+  const { user } = useContext(AuthContext);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
-  const checkOutFromCart = useStore(
-    (state: any) => state.checkOutFromCart,
-  );
+  const checkOutFromCart = useStore((state: any) => state.checkOutFromCart);
 
-  const [paymentMode, setPaymentMode] = useState('Credit Card');
+  const [paymentMode, setPaymentMode] = useState("Credit Card");
   const [showAnimation, setShowAnimation] = useState(false);
 
   const buttonPressHandler = () => {
@@ -61,7 +61,7 @@ const PaymentScreen = ({navigation, route}: any) => {
     calculateCartPrice();
     setTimeout(() => {
       setShowAnimation(false);
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }, 2000);
   };
 
@@ -72,39 +72,43 @@ const PaymentScreen = ({navigation, route}: any) => {
       {showAnimation ? (
         <PopUpAnimation
           style={styles.LottieAnimation}
-          source={require('../lottie/successful.json')}
+          source={require("../../lottie/successful.json")}
         />
       ) : (
         <></>
       )}
 
-      <HeaderBar title={''} />
+      <HeaderBar title={""} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}>
+        contentContainerStyle={styles.ScrollViewFlex}
+      >
         <View style={styles.PaymentOptionsContainer}>
           <TouchableOpacity
             onPress={() => {
-              setPaymentMode('Credit Card');
-            }}>
+              setPaymentMode("Credit Card");
+            }}
+          >
             <View
               style={[
                 styles.CreditCardContainer,
                 {
                   borderColor:
-                    paymentMode == 'Credit Card'
+                    paymentMode == "Credit Card"
                       ? COLORS.primaryWhiteHex
                       : COLORS.primaryGreyHex,
                 },
-              ]}>
+              ]}
+            >
               <Text style={styles.CreditCardTitle}>Credit Card</Text>
               <View style={styles.CreditCardBG}>
                 <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 1}}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
                   style={styles.LinearGradientStyle}
-                  colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}>
+                  colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
+                >
                   <View style={styles.CreditCardRow}>
                     <CustomIcon
                       name="chip"
@@ -129,14 +133,26 @@ const PaymentScreen = ({navigation, route}: any) => {
                         Card Holder Name
                       </Text>
                       <Text style={styles.CreditCardNameTitle}>
-                        Robert Evans
+                        {user?.fullName}
                       </Text>
                     </View>
                     <View style={styles.CreditCardDateContainer}>
-                      <Text style={styles.CreditCardNameSubitle}>
+                      <Text
+                        style={[
+                          styles.CreditCardNameSubitle,
+                          { color: COLORS.primaryBlackRGBA },
+                        ]}
+                      >
                         Expiry Date
                       </Text>
-                      <Text style={styles.CreditCardNameTitle}>02/30</Text>
+                      <Text
+                        style={[
+                          styles.CreditCardNameTitle,
+                          { color: COLORS.primaryBlackRGBA },
+                        ]}
+                      >
+                        02/30
+                      </Text>
                     </View>
                   </View>
                 </LinearGradient>
@@ -148,7 +164,8 @@ const PaymentScreen = ({navigation, route}: any) => {
               key={data.name}
               onPress={() => {
                 setPaymentMode(data.name);
-              }}>
+              }}
+            >
               <PaymentMethod
                 paymentMode={paymentMode}
                 name={data.name}
@@ -162,7 +179,7 @@ const PaymentScreen = ({navigation, route}: any) => {
 
       <PaymentFooter
         buttonTitle={`Pay with ${paymentMode}`}
-        price={{price: route.params.amount, currency: '$'}}
+        price={{ price: route.params.amount, currency: "$" }}
         buttonPressHandler={buttonPressHandler}
       />
     </Container>
@@ -179,9 +196,9 @@ const styles = StyleSheet.create({
   HeaderContainer: {
     paddingHorizontal: SPACING.space_24,
     paddingVertical: SPACING.space_15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   HeaderText: {
     fontFamily: FONTFAMILY.avenir,
@@ -220,14 +237,14 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.space_10,
   },
   CreditCardRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   CreditCardNumberContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: SPACING.space_10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   CreditCardNumber: {
     fontFamily: FONTFAMILY.avenir,
@@ -246,10 +263,10 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
   },
   CreditCardNameContainer: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   CreditCardDateContainer: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
 });
 

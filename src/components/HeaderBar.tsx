@@ -1,8 +1,8 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../utils/theme/theme';
-import Left from '../assets/icons/left.svg';
-import {useNavigation} from '@react-navigation/native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from "../utils/theme/theme";
+import Left from "../assets/icons/left.svg";
+import { useNavigation } from "@react-navigation/native";
 
 interface HeaderBarProps {
   title: string;
@@ -24,9 +24,14 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
         {showBackSection ? (
           <TouchableOpacity
             style={styles.HeaderSectionStyle}
-            onPress={() => navigation.goBack()}>
-            <Left height={SPACING.space_28} color={COLORS.primaryBlackRGBA} />
-            {showBackText && <Text>Back</Text>}
+            onPress={() => navigation.goBack()}
+          >
+            <View style={{ marginLeft: -SPACING.space_4, marginRight: SPACING.space_8 }}>
+              <Left height={SPACING.space_28} color={COLORS.primaryBlackRGBA} />
+            </View>
+            {showBackText && (
+              <Text style={{ fontFamily: FONTFAMILY.avenir, color: COLORS.primaryBlackRGBA, fontSize: FONTSIZE.size_16 }}>Back</Text>
+            )}
           </TouchableOpacity>
         ) : (
           <View />
@@ -44,18 +49,19 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
 
 const styles = StyleSheet.create({
   HeaderContainerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   HeaderSectionStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   ScreenTitle: {
     fontSize: FONTSIZE.size_28,
-    fontFamily: FONTFAMILY.avenir,
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.adobe_garamond_bold,
     color: COLORS.primaryBlackRGBA,
   },
 });

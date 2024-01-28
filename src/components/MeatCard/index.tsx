@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Dimensions,
   ImageBackground,
-  ImageProps,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -17,7 +16,8 @@ import {
 } from "../../utils/theme/theme";
 import Cart from "../../assets/icons/cart.svg";
 import Correct from "../../assets/icons/correct.svg";
-import { TYPE_MeatData, TYPE_MeatType } from "../../utils/types";
+import { TYPE_MeatData } from "../../utils/types";
+import AuthContext from "../../authContext";
 
 const CARD_WIDTH = Dimensions.get("window").width;
 
@@ -28,6 +28,7 @@ interface meatCardProps {
 
 const MeatCard: React.FC<meatCardProps> = ({ item, buttonPressHandler }) => {
   const [submitted, setSubmitted] = useState(false);
+  const { exploreApp, setExploreApp } = useContext(AuthContext);
 
   return (
     <View style={styles.CardLinearGradientContainer}>
@@ -43,31 +44,36 @@ const MeatCard: React.FC<meatCardProps> = ({ item, buttonPressHandler }) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            buttonPressHandler({
-              ...item,
-            });
-            setSubmitted(true);
-            setTimeout(() => {
-              setSubmitted(false);
-            }, 1000);
+            if (exploreApp) {
+              setExploreApp?.(false);
+            } else {
+              buttonPressHandler({
+                ...item,
+              });
+              setSubmitted(true);
+              setTimeout(() => {
+                setSubmitted(false);
+              }, 1000);
+            }
           }}
         >
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
-              width: 25,
-              height: 25,
+              width: 22,
+              height: 22,
               borderWidth: 1,
               borderColor: COLORS.primaryBlackRGBA,
               borderRadius: 16,
               backgroundColor: submitted ? COLORS.primaryBlackRGBA : undefined,
+              marginLeft: -SPACING.space_4
             }}
           >
             {submitted ? (
-              <Correct height={16} color={COLORS.primaryWhiteHex} />
+              <Correct height={14} color={COLORS.primaryWhiteHex} />
             ) : (
-              <Cart height={16} color={COLORS.primaryBlackRGBA} />
+              <Cart height={14} color={COLORS.primaryBlackRGBA} />
             )}
           </View>
         </TouchableOpacity>
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: SPACING.space_15,
+    paddingRight: SPACING.space_2
   },
   CardPriceCurrency: {
     fontFamily: FONTFAMILY.avenir_heavy,

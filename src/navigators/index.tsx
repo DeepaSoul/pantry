@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React, { useContext } from "react";
 import AuthContext from "../authContext";
 import { NavigationContainer } from "@react-navigation/native";
@@ -6,8 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
 import DetailsScreen from "../screens/DetailsScreen";
 import LoginScreen from "../screens/Login";
-import PaymentScreen from "../screens/PaymentScreen";
 import RegisterScreen from "../screens/Register";
+import PaymentScreen from "../screens/PaymentScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,13 +35,13 @@ const NavigationStacks = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen
-            name="Login"
+          <Stack.Screen
+            name="LoginScreen"
             component={LoginScreen}
             options={{animation: 'slide_from_bottom'}}
-          /> */}
+          />
           <Stack.Screen
-            name="Register"
+            name="RegisterScreen"
             component={RegisterScreen}
             options={{ animation: "slide_from_bottom" }}
           />

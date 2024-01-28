@@ -17,6 +17,7 @@ import Left from "../../assets/icons/left.svg";
 import AuthContext from "../../authContext";
 import EyeOpen from "../../assets/icons/eyeOpened.svg";
 import EyeClosed from "../../assets/icons/eyeClosed.svg";
+import Cross from "../../assets/icons/cross.svg";
 import { registerUser } from "../../store/database";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
@@ -51,7 +52,11 @@ const RegisterScreen = ({ navigation }: any) => {
       userLoginFormData.email == "" ||
       !userLoginFormData.email ||
       userLoginFormData.password == "" ||
-      !userLoginFormData.password
+      !userLoginFormData.password ||
+      userLoginFormData.fullName == "" ||
+      !userLoginFormData.fullName ||
+      userLoginFormData.phoneNumber == "" ||
+      !userLoginFormData.phoneNumber
     ) {
       return setSubmitError("Information Missing");
     }
@@ -70,9 +75,15 @@ const RegisterScreen = ({ navigation }: any) => {
     type: InputType
   ) => {
     submitError && setSubmitError(undefined);
-    setUserLoginFormData({ ...userLoginFormData, [name]: text });
 
-    if (type == "telephoneNumber" && text.length < 10) {
+    if (
+      (type === "telephoneNumber" && !new RegExp("[^0-9]", "g").test(text)) ||
+      type !== "telephoneNumber"
+    ) {
+      setUserLoginFormData({ ...userLoginFormData, [name]: text });
+    }
+
+    if (type === "telephoneNumber" && (text.length < 9 || !parseInt(text))) {
       setFormErrors([
         ...formErrors,
         { name, message: "Telephone Number incorrect." },
@@ -127,17 +138,15 @@ const RegisterScreen = ({ navigation }: any) => {
               textContentType={type}
               placeholder={"+27"}
               value={"+27"}
-              onChangeText={(text) => {
-                changeTextInput(name, text, type);
-              }}
               style={{
                 fontFamily: FONTFAMILY.adobe_garamond_bold,
                 color: COLORS.primaryBlackRGBA,
-                width: SCREEN_WIDTH * 0.08,
+                width: SCREEN_WIDTH * 0.1,
                 paddingRight: SPACING.space_4,
                 marginRight: SPACING.space_8,
                 borderRightWidth: 1,
                 borderRightColor: COLORS.primaryBlackRGBA,
+                fontSize: FONTSIZE.size_18,
               }}
             />
           )}
@@ -155,7 +164,7 @@ const RegisterScreen = ({ navigation }: any) => {
               color: COLORS.primaryBlackRGBA,
               width:
                 type === "telephoneNumber"
-                  ? SCREEN_WIDTH * 0.75
+                  ? SCREEN_WIDTH * 0.73
                   : SCREEN_WIDTH * 0.85,
             }}
           />
@@ -176,7 +185,7 @@ const RegisterScreen = ({ navigation }: any) => {
                 <EyeClosed color={COLORS.primaryBlackRGBA} />
               )
             ) : (
-              <Text>X</Text>
+              <Cross color={COLORS.primaryBlackRGBA} />
             )}
           </TouchableOpacity>
         </View>
@@ -295,5 +304,3 @@ const RegisterScreen = ({ navigation }: any) => {
 };
 
 export default RegisterScreen;
-
-const styles = StyleSheet.create({});

@@ -9,21 +9,21 @@ import {
   ToastAndroid,
   Platform,
 } from "react-native";
-import { useStore } from "../store/store";
+import { useStore } from "../../store/store";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
   SPACING,
-} from "../utils/theme/theme";
-import HeaderBar from "../components/HeaderBar";
+} from "../../utils/theme/theme";
+import HeaderBar from "../../components/HeaderBar";
 import { Dimensions } from "react-native";
-import Container from "../components/Container";
-import Filter from "../assets/icons/filter.svg";
-import Title from "../components/Title";
-import { TYPE_MeatData, TYPE_MeatType } from "../utils/types";
-import MeatCard from "../components/MeatCard";
+import Container from "../../components/Container";
+import Filter from "../../assets/icons/filter.svg";
+import Title from "../../components/Title";
+import { TYPE_MeatData, TYPE_MeatType } from "../../utils/types";
+import MeatCard from "../../components/MeatCard";
 
 const getCategoriesFromData = (data: any): TYPE_MeatType[] => {
   let temp: any = {};
@@ -124,9 +124,9 @@ const HomeScreen = ({ navigation }: any) => {
         <HeaderBar
           title="Meat"
           rightSection={[
-            <Text key={0}>Filter</Text>,
+            <Text key={0} style={{ fontFamily: FONTFAMILY.avenir, color: COLORS.primaryBlackRGBA, fontSize: FONTSIZE.size_16, marginRight: SPACING.space_4 }}>Filter</Text>,
             <Filter
-              height={SPACING.space_16}
+              height={SPACING.space_18}
               key={1}
               color={COLORS.primaryBlackRGBA}
             />,

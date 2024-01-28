@@ -87,15 +87,19 @@
     },
     {
       "path": "src/assets/icons/correct.svg",
-      "sha1": "0f25b092bcd31e2509748889fb065d8ff403afb4"
+      "sha1": "3178529d0597844d082ee2b19997ab44b945628a"
+    },
+    {
+      "path": "src/assets/icons/cross.svg",
+      "sha1": "932f6bfe9358012e25b07383fb4c1104f1d27065"
     },
     {
       "path": "src/assets/icons/eyeClosed.svg",
-      "sha1": "f764ea8edeffc0e7c3586f6edeaff4f02e273217"
+      "sha1": "bd834579a84fb7a0d75517b39a4e8484dc4142e2"
     },
     {
       "path": "src/assets/icons/eyeOpened.svg",
-      "sha1": "9ff829a94f1d67d1f1721dbb10332cd86e1364d8"
+      "sha1": "d6b3bdb07535dbce93552ce1b1286af9e8b53411"
     },
     {
       "path": "src/assets/icons/filter.svg",

@@ -4,17 +4,17 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-} from 'react-native';
-import React from 'react';
+} from "react-native";
+import React from "react";
 import {
   BORDERRADIUS,
   COLORS,
   FONTFAMILY,
   FONTSIZE,
   SPACING,
-} from '../utils/theme/theme';
+} from "../utils/theme/theme";
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 interface PriceProps {
   price: string;
@@ -37,15 +37,17 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
         <Text
           style={[
             styles.PriceTitle,
-            {fontFamily: FONTFAMILY.avenir, fontSize: FONTSIZE.size_12},
-          ]}>
+            { fontFamily: FONTFAMILY.avenir, fontSize: FONTSIZE.size_12 },
+          ]}
+        >
           Sub total
         </Text>
         <Text
           style={[
             styles.PriceText,
-            {fontFamily: FONTFAMILY.avenir_heavy, fontSize: FONTSIZE.size_14},
-          ]}>
+            { fontFamily: FONTFAMILY.avenir_heavy, fontSize: FONTSIZE.size_14 },
+          ]}
+        >
           R <Text style={styles.Price}>{price.price}</Text>
         </Text>
       </View>
@@ -53,30 +55,38 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
         <Text
           style={[
             styles.PriceTitle,
-            {fontFamily: FONTFAMILY.avenir, fontSize: FONTSIZE.size_12},
-          ]}>
+            { fontFamily: FONTFAMILY.avenir, fontSize: FONTSIZE.size_12 },
+          ]}
+        >
           Delivery
         </Text>
         <Text
           style={[
             styles.PriceText,
-            {fontFamily: FONTFAMILY.avenir_heavy, fontSize: FONTSIZE.size_14},
-          ]}>
-          R <Text style={styles.Price}>{price.price}</Text>
+            { fontFamily: FONTFAMILY.avenir_heavy, fontSize: FONTSIZE.size_14 },
+          ]}
+        >
+          R{" "}
+          <Text style={styles.Price}>
+            {(parseFloat(price.price) / 10).toFixed(2)}
+          </Text>
         </Text>
       </View>
       <View style={styles.PriceTotalContainer}>
         <Text style={styles.PriceText}>Total</Text>
         <Text style={styles.PriceText}>
-          R{' '}
-          <Text style={[styles.Price, {fontSize: FONTSIZE.size_18}]}>
-            {price.price}
+          R{" "}
+          <Text style={[styles.Price, { fontSize: FONTSIZE.size_18 }]}>
+            {(parseFloat(price.price) + parseFloat(price.price) / 10).toFixed(
+              2
+            )}
           </Text>
         </Text>
       </View>
       <TouchableOpacity
         style={styles.PayButton}
-        onPress={() => buttonPressHandler()}>
+        onPress={() => buttonPressHandler()}
+      >
         <Text style={styles.ButtonText}>Checkout</Text>
       </TouchableOpacity>
     </View>
@@ -85,7 +95,7 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
 
 const styles = StyleSheet.create({
   PriceFooter: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     backgroundColor: COLORS.backgroundGrey,
     paddingHorizontal: SPACING.space_15,
     paddingVertical: SPACING.space_15,
@@ -93,15 +103,15 @@ const styles = StyleSheet.create({
   },
   PriceContainer: {
     width: SCREEN_WIDTH * 0.9,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   PriceTotalContainer: {
     width: SCREEN_WIDTH * 0.9,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderTopWidth: 1,
     borderTopColor: COLORS.primaryBlackRGBA,
   },
@@ -123,8 +133,8 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.9,
     marginTop: SPACING.space_8,
     backgroundColor: COLORS.primaryBlackRGBA,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: SPACING.space_20 * 2.2,
     borderRadius: BORDERRADIUS.radius_20,
   },

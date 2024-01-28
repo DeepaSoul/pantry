@@ -1,10 +1,10 @@
-import {SafeAreaView} from 'react-native';
-import React from 'react';
-import {ContainerStyles} from './style';
+import { SafeAreaView } from "react-native";
+import React from "react";
+import { ContainerStyles } from "./style";
 
-const Container = ({children}: React.PropsWithChildren) => {
+const Container = ({ children }: React.PropsWithChildren) => {
   return (
-    <SafeAreaView style={ContainerStyles.ScreenContainer}>
+    <SafeAreaView style={[ContainerStyles.ScreenContainer]}>
       {children}
     </SafeAreaView>
   );

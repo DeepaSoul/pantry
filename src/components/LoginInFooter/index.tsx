@@ -5,16 +5,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
-import {
-  BORDERRADIUS,
-  COLORS,
-  FONTFAMILY,
-  SPACING,
-} from "../../utils/theme/theme";
-import { useNavigation } from "@react-navigation/native";
-
-const SCREEN_WIDTH = Dimensions.get("screen").width;
+import React, { useContext } from "react";
+import { COLORS, FONTFAMILY, FONTSIZE } from "../../utils/theme/theme";
+import AuthContext from "../../authContext";
+import styles from "./style";
 
 const LoginInFooter = ({
   navigation,
@@ -25,6 +19,8 @@ const LoginInFooter = ({
   type: "login" | "register";
   onClickHandler: () => void;
 }) => {
+  const { setExploreApp } = useContext(AuthContext);
+
   return (
     <View style={styles.FooterContainer}>
       <TouchableOpacity style={styles.FooterButton} onPress={onClickHandler}>
@@ -32,11 +28,12 @@ const LoginInFooter = ({
           {type === "login" ? "Sign In" : "Sign up"}
         </Text>
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() => {
           type === "login"
-            ? navigation.navigate("Login")
-            : navigation.navigate("Register");
+            ? navigation.navigate("RegisterScreen")
+            : navigation.navigate("LoginScreen");
         }}
       >
         <Text style={styles.ScreenChangeText}>
@@ -46,22 +43,43 @@ const LoginInFooter = ({
           </Text>
         </Text>
       </TouchableOpacity>
+
       <View style={styles.Options}>
         <View style={styles.GreenLine} />
         <Text style={styles.OptionsText}>or</Text>
         <View style={styles.GreenLine} />
       </View>
-      <TouchableOpacity style={styles.FooterButton} onPress={() => navigation.navigate("Tab")}>
+
+      <TouchableOpacity
+        style={styles.FooterButton}
+        onPress={() => setExploreApp?.(true)}
+      >
         <Text style={styles.FooterButtonText}>Explore our app</Text>
       </TouchableOpacity>
+
       {type === "register" && (
-        <View>
-          <Text>
-            By sigining up you agree to our, <Text>Terms</Text>,{" "}
-            <Text>Data Policy</Text> and
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: 13,
+              fontFamily: FONTFAMILY.avenir,
+              color: COLORS.primaryBlackRGBA,
+            }}
+          >
+            By sigining up you agree to our,{" "}
+            <Text style={styles.ScreenChangeInnerText}>Terms</Text>,{" "}
+            <Text style={styles.ScreenChangeInnerText}>Data Policy</Text> and
           </Text>
+
           <TouchableOpacity>
-            <Text>Cookies Policy</Text>
+            <Text
+              style={[
+                styles.ScreenChangeInnerText,
+                { color: COLORS.primaryBlackRGBA, fontSize: 13, },
+              ]}
+            >
+              Cookies Policy
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -70,47 +88,3 @@ const LoginInFooter = ({
 };
 
 export default LoginInFooter;
-
-const styles = StyleSheet.create({
-  FooterContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  FooterButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: SCREEN_WIDTH * 0.95,
-    height: SPACING.space_28 * 2,
-    backgroundColor: COLORS.primaryBlackRGBA,
-    borderRadius: BORDERRADIUS.radius_20 * 4,
-    marginVertical: SPACING.space_30,
-  },
-  FooterButtonText: {
-    fontFamily: FONTFAMILY.avenir,
-    color: COLORS.primaryWhiteHex,
-  },
-  ScreenChangeText: {
-    fontFamily: FONTFAMILY.avenir,
-    fontSize: SPACING.space_15,
-    color: COLORS.primaryBlackRGBA,
-    marginBottom: SPACING.space_8,
-  },
-  ScreenChangeInnerText: {
-    fontFamily: FONTFAMILY.avenir_heavy,
-  },
-  Options: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: SCREEN_WIDTH * 0.05,
-    width: SCREEN_WIDTH * 0.95,
-  },
-  GreenLine: {
-    height: 1,
-    width: SCREEN_WIDTH * 0.375,
-    backgroundColor: COLORS.primaryBlackRGBA,
-  },
-  OptionsText: {
-    fontFamily: FONTFAMILY.avenir,
-    marginHorizontal: SPACING.space_20,
-  },
-});
