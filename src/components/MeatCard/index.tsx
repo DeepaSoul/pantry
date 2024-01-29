@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, memo } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -18,6 +18,7 @@ import Cart from "../../assets/icons/cart.svg";
 import Correct from "../../assets/icons/correct.svg";
 import { TYPE_MeatData } from "../../utils/types";
 import AuthContext from "../../authContext";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 const CARD_WIDTH = Dimensions.get("window").width;
 
@@ -29,56 +30,69 @@ interface meatCardProps {
 const MeatCard: React.FC<meatCardProps> = ({ item, buttonPressHandler }) => {
   const [submitted, setSubmitted] = useState(false);
   const { exploreApp, setExploreApp } = useContext(AuthContext);
+  const navigation = useNavigation<any>();
 
   return (
-    <View style={styles.CardLinearGradientContainer}>
-      <ImageBackground
-        source={item.imagelink}
-        style={styles.CardImageBG}
-        resizeMode="cover"
-      />
-      <Text style={styles.CardTitle}>{item?.name}</Text>
-      <View style={styles.CardFooterRow}>
-        <Text style={styles.CardPriceCurrency}>
-          R <Text style={styles.CardPrice}>{item?.price ?? 1}</Text>
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            if (exploreApp) {
-              setExploreApp?.(false);
-            } else {
-              buttonPressHandler({
-                ...item,
-              });
-              setSubmitted(true);
-              setTimeout(() => {
-                setSubmitted(false);
-              }, 1000);
-            }
-          }}
-        >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              width: 22,
-              height: 22,
-              borderWidth: 1,
-              borderColor: COLORS.primaryBlackRGBA,
-              borderRadius: 16,
-              backgroundColor: submitted ? COLORS.primaryBlackRGBA : undefined,
-              marginLeft: -SPACING.space_4
+    <TouchableOpacity
+      key={item.id}
+      onPress={() => {
+        navigation.navigate("Details", {
+          id: item.id,
+          type: item.type,
+        });
+      }}
+    >
+      <View style={styles.CardLinearGradientContainer}>
+        <ImageBackground
+          source={item.imagelink}
+          style={styles.CardImageBG}
+          resizeMode="cover"
+        />
+        <Text style={styles.CardTitle}>{item?.name}</Text>
+        <View style={styles.CardFooterRow}>
+          <Text style={styles.CardPriceCurrency}>
+            R <Text style={styles.CardPrice}>{item?.price ?? 1}</Text>
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              if (exploreApp) {
+                setExploreApp?.(false);
+              } else {
+                buttonPressHandler({
+                  ...item,
+                });
+                setSubmitted(true);
+                setTimeout(() => {
+                  setSubmitted(false);
+                }, 1000);
+              }
             }}
           >
-            {submitted ? (
-              <Correct height={14} color={COLORS.primaryWhiteHex} />
-            ) : (
-              <Cart height={14} color={COLORS.primaryBlackRGBA} />
-            )}
-          </View>
-        </TouchableOpacity>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: 22,
+                height: 22,
+                borderWidth: 1,
+                borderColor: COLORS.primaryBlackRGBA,
+                borderRadius: 16,
+                backgroundColor: submitted
+                  ? COLORS.primaryBlackRGBA
+                  : undefined,
+                marginLeft: -SPACING.space_4,
+              }}
+            >
+              {submitted ? (
+                <Correct height={14} color={COLORS.primaryWhiteHex} />
+              ) : (
+                <Cart height={14} color={COLORS.primaryBlackRGBA} />
+              )}
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -109,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: SPACING.space_15,
-    paddingRight: SPACING.space_2
+    paddingRight: SPACING.space_2,
   },
   CardPriceCurrency: {
     fontFamily: FONTFAMILY.avenir_heavy,
@@ -121,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MeatCard;
+export default memo(MeatCard);

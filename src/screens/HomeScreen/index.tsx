@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -8,6 +7,8 @@ import {
   View,
   ToastAndroid,
   Platform,
+  FlatList,
+  Dimensions,
 } from "react-native";
 import { useStore } from "../../store/store";
 import {
@@ -18,20 +19,21 @@ import {
   SPACING,
 } from "../../utils/theme/theme";
 import HeaderBar from "../../components/HeaderBar";
-import { Dimensions } from "react-native";
 import Container from "../../components/Container";
 import Filter from "../../assets/icons/filter.svg";
 import Title from "../../components/Title";
 import { TYPE_MeatData, TYPE_MeatType } from "../../utils/types";
 import MeatCard from "../../components/MeatCard";
 
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
 const getCategoriesFromData = (data: any): TYPE_MeatType[] => {
   let temp: any = {};
-  for (let i = 0; i < data.length; i++) {
-    if (temp[data[i].type] == undefined) {
-      temp[data[i].type] = 1;
+  for (const element of data) {
+    if (temp[element.type] == undefined) {
+      temp[element.type] = 1;
     } else {
-      temp[data[i].type]++;
+      temp[element.type]++;
     }
   }
   let categories = Object.keys(temp);
@@ -53,7 +55,7 @@ const getmeatList = (
   }
 };
 
-const HomeScreen = ({ navigation }: any) => {
+const HomeScreen = () => {
   const meatList = useStore((state: any) => state.meatList);
   const addToCart = useStore((state: any) => state.addToCart);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
@@ -96,35 +98,25 @@ const HomeScreen = ({ navigation }: any) => {
     }
   };
 
-  const returnItemCard = (item: TYPE_MeatData, index: number) => {
-    return (
-      <TouchableOpacity
-        key={item.id}
-        onPress={() => {
-          navigation.push("Details", {
-            index: index,
-            id: item.id,
-            type: item.type,
-          });
-        }}
-      >
-        <MeatCard item={item} buttonPressHandler={CoffeCardAddToCart} />
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <Container>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.ScrollViewFlex}
-      >
+      <View style={styles.ScrollViewFlex}>
         {/* App Header */}
         <HeaderBar
           title="Meat"
           rightSection={[
-            <Text key={0} style={{ fontFamily: FONTFAMILY.avenir, color: COLORS.primaryBlackRGBA, fontSize: FONTSIZE.size_16, marginRight: SPACING.space_4 }}>Filter</Text>,
+            <Text
+              key={0}
+              style={{
+                fontFamily: FONTFAMILY.avenir,
+                color: COLORS.primaryBlackRGBA,
+                fontSize: FONTSIZE.size_16,
+                marginRight: SPACING.space_4,
+              }}
+            >
+              Filter
+            </Text>,
             <Filter
               height={SPACING.space_18}
               key={1}
@@ -178,7 +170,7 @@ const HomeScreen = ({ navigation }: any) => {
             color: COLORS.primaryBlackRGBA,
             fontSize: FONTSIZE.size_30,
             marginTop: SPACING.space_10,
-            marginBottom: SPACING.space_20
+            marginBottom: SPACING.space_20,
           }}
         >
           Our products
@@ -187,24 +179,31 @@ const HomeScreen = ({ navigation }: any) => {
         {/* meat Flatlist */}
 
         {meatList && sortedMeat?.length > 0 ? (
-          <View
-            style={{
+          <FlatList
+            data={sortedMeat}
+            initialNumToRender={4}
+            showsVerticalScrollIndicator={false}
+            numColumns={2}
+            columnWrapperStyle={{
               gap: 10,
-              marginHorizontal: "auto",
-              width: "auto",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              marginBottom: SPACING.space_30 * 3,
             }}
-          >
-            {sortedMeat.map(returnItemCard)}
-          </View>
+            contentContainerStyle={{
+              gap: 10,
+            }}
+            style={{
+              marginBottom: SPACING.space_30 * 10,
+            }}
+            renderItem={({ item }) => (
+              <MeatCard item={item} buttonPressHandler={CoffeCardAddToCart} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
         ) : (
           <View style={styles.EmptyListContainer}>
             <Text style={styles.CategoryText}>No meat Available</Text>
           </View>
         )}
-      </ScrollView>
+      </View>
     </Container>
   );
 };
